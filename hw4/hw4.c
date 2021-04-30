@@ -129,7 +129,7 @@ void card_show(struct card c)
     }
     else
     {
-        if (c.rs.p.rank == 1)
+        if (c.rs.p.rank)
         {
             printf("Ace"); 
         }
