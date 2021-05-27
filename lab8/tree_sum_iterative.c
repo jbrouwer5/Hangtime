@@ -18,6 +18,7 @@ int treesum(tree *t)
       push(curr->lsub,stk);
     sum+=curr->root;
   }
+  tree_stack_free(stk);
   return sum;
 }
 
@@ -34,7 +35,7 @@ int main(int argc, char *argv[])
   for (i=0; i<6; i++) {
     printf("t%d: ",i);
     tree_show(stdout,ts[i]);
-    printf("\ntreesum: %d\n\n",treesum(ts[i]));
+    printf("\ntreesum: %d\n\n",treesum(ts[i])); 
   }
   return 0;
 }
