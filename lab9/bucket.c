@@ -5,25 +5,56 @@
 
 bucket *bucket_cons(char *s, unsigned long int hash, bucket *b)
 {
-  fprintf(stderr,"todo: bucket_cons\n");
-  exit(1);
+    bucket *new_bucket = (bucket*)malloc(sizeof(bucket)); 
+    char *str = (char*)malloc(sizeof(char) * strlen(s)); 
+
+    for (int j = 0; j < strlen(s); j++)
+    {
+        str[j] = s[j]; 
+    }
+
+    new_bucket->string = str; 
+    new_bucket->hash = hash; 
+    new_bucket->next = b; 
+
+    return new_bucket; 
 }
 
 unsigned int bucket_size(bucket *b)
 {
-  fprintf(stderr,"todo: bucket_size\n");
-  exit(1);
+    int count = 0; 
+
+    while (b != NULL)
+    {
+        count++; 
+        b = b->next; 
+    }
+
+    return count; 
 }
 
 void bucket_show(bucket *b)
 {
-  fprintf(stderr,"todo: bucket_show\n");
-  exit(1);
+    while (b != NULL)
+    {
+        fprintf(stdout, "%s", b->string); 
+        if (b->next != NULL)
+        {
+            fprintf(stdout, " -> "); 
+        }
+
+        b = b->next; 
+    }
 }
 
 void bucket_free(bucket *b)
 {
-  fprintf(stderr,"todo: bucket_free\n");
-  exit(1);
+    while (b != NULL)
+    {
+        free(b->string);
+        bucket *temp = b->next; 
+        free(b);  
+        b = temp; 
+    }
 }
 

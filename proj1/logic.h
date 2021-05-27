@@ -32,14 +32,19 @@ struct game {
 
 typedef struct game game;
 
-
+/* Creates a new game with the specified size and rules. */ 
 game* new_game(unsigned int run, unsigned int hangtime, unsigned int width,
                unsigned int height, enum type type);
 
+/* Frees the entirety of a given game. */
 void game_free(game* g);
 
+/* Places a piece for the specified player at position p. If the position is 
+full it returns false. If the position is empty then adds the piece, simulates
+the change in gravity for that return, changes the turn and returns true. */
 bool place_piece(game* g, pos p);
 
+/* Reports the outcome of the game, or returns in progress */
 outcome game_outcome(game* g);
 
 #endif /* LOGIC_H */
