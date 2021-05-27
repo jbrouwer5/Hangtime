@@ -22,17 +22,17 @@ void evidence_make_change()
     printf("\n***Testing make_change***\n"); 
 
     struct coins change1 = make_change(147); 
-    printf("Expecting 5 quarters, 2 dimes, 0 nickels, 2 pennies. : "
+    printf("Expecting \n5 quarters, 2 dimes, 0 nickels, 2 pennies. : \n"
            "%d quarters, %d dimes, %d nickels, %d pennies\n", 
            change1.quarters, change1.dimes, change1.nickels, change1.pennies); 
 
     struct coins change2 = make_change(67); 
-    printf("Expecting 2 quarters, 1 dimes, 1 nickels, 2 pennies. : "
+    printf("Expecting \n2 quarters, 1 dimes, 1 nickels, 2 pennies. : \n"
            "%d quarters, %d dimes, %d nickels, %d pennies\n", 
            change2.quarters, change2.dimes, change2.nickels, change2.pennies); 
 
     struct coins change3 = make_change(215); 
-    printf("Expecting 8 quarters, 1 dimes, 1 nickels, 0 pennies. : "
+    printf("Expecting \n8 quarters, 1 dimes, 1 nickels, 0 pennies. : \n"
            "%d quarters, %d dimes, %d nickels, %d pennies\n", 
            change3.quarters, change3.dimes, change3.nickels, change3.pennies); 
 }
@@ -43,22 +43,22 @@ void evidence_negative()
 
     struct color purp = {.red = 255, .green = 0, .blue = 255};
     struct color* green = negative(&purp);
-    printf("Expecting 0 255 0 : %d %d %d\n",
+    printf("Expecting \n0 255 0 : \n%d %d %d\n",
             green->red, green->green, green->blue);
 
     struct color test1 = {.red = 177, .green = 3, .blue = 220};
     struct color* result1 = negative(&test1);
-    printf("Expecting 78 252 35 : %d %d %d\n",
+    printf("Expecting \n78 252 35 : \n%d %d %d\n",
             result1->red, result1->green, result1->blue);
 
     struct color test2 = {.red = 0, .green = 0, .blue = 0};
     struct color* result2 = negative(&test2);
-    printf("Expecting 255 255 255 : %d %d %d\n",
+    printf("Expecting \n255 255 255 : \n%d %d %d\n",
             result2->red, result2->green, result2->blue);
 
     struct color test3 = {.red = 255, .green = 255, .blue = 255};
     struct color* result3 = negative(&test3);
-    printf("Expecting 0 0 0 : %d %d %d\n",
+    printf("Expecting \n0 0 0 : \n%d %d %d\n",
             result3->red, result3->green, result3->blue);
 }
 
@@ -68,17 +68,17 @@ void evidence_greyscale()
 
     struct color test1 = {.red = 182, .green = 145, .blue = 0};
     struct color* result1 = greyscale(&test1);
-    printf("Expecting 139 139 139 : %d %d %d\n",
+    printf("Expecting \n139 139 139 : \n%d %d %d\n",
             result1->red, result1->green, result1->blue);
 
     struct color test2 = {.red = 129, .green = 10, .blue = 254};
     struct color* result2 = greyscale(&test2);
-    printf("Expecting 73 73 73 : %d %d %d\n",
+    printf("Expecting \n73 73 73 : \n%d %d %d\n",
             result2->red, result2->green, result2->blue);
 
     struct color test3 = {.red = 255, .green = 255, .blue = 255};
     struct color* result3 = greyscale(&test3);
-    printf("Expecting 255 255 255 : %d %d %d\n",
+    printf("Expecting \n255 255 255 : \n%d %d %d\n",
             result3->red, result3->green, result3->blue);
 }
 
@@ -159,7 +159,7 @@ void evidence_cards_equal()
     int result5 = cards_equal(card6, card7); //false
     int result6 = cards_equal(card1, card7); //false
 
-    printf("Expecting 1 1 0 1 0 0 : %d %d %d %d %d %d\n", 
+    printf("Expecting \n1 : %d\n1 : %d\n0 : %d\n1 : %d\n0 : %d\n0 : %d\n", 
            result1, result2, result3, result4, result5, result6); 
 }
 
@@ -186,8 +186,8 @@ void evidence_sum_cards()
     cards2[2] = card5; 
     cards2[3] = card5; 
 
-    printf("Expecting 30 : %d\n", sum_cards(cards1, 5)); 
-    printf("Expecting 16 : %d\n", sum_cards(cards2, 4));    
+    printf("Expecting 29 : %d\n", sum_cards(cards1, 5)); 
+    printf("Expecting 14 : %d\n", sum_cards(cards2, 4));    
 }
 
 int main(int argc, char *argv[])

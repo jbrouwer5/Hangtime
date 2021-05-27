@@ -55,24 +55,27 @@ struct color* greyscale(struct color* c)
 
 int all_black(struct card* cards, unsigned int ncards)
 {
-     for (int j = 0; j < ncards; j++)
-     {
-        int joker = 0; 
+    for (int j = 0; j < ncards; j++)
+    {
+       int joker = 0; 
+       int black = 0; 
+
         if (cards[j].type == JOKER)
         {
             joker = 1; 
         }
-        int black = 0; 
+
         if (cards[j].rs.f.suit == SPADES ||
             cards[j].rs.f.suit == CLUBS) 
         {
             black = 1;
         }
-         if (joker || !black)
-         {
-             return 0; 
-         }
-     }
+        
+        if (joker || !black)
+        {
+            return 0; 
+        }
+    }
 
      return 1;
 }
@@ -126,48 +129,15 @@ void card_show(struct card c)
     }
     else
     {
-        switch (c.rs.p.rank)
+        if (c.rs.p.rank)
         {
-            case 1:
-            rank = "Ace"; 
-            break;
-
-            case 2:
-            rank = "2"; 
-            break; 
-
-            case 3:
-            rank = "3"; 
-            break;
-
-            case 4:
-            rank = "4"; 
-            break;
-
-            case 5:
-            rank = "5"; 
-            break;
-
-            case 6:
-            rank = "6"; 
-            break;
-
-            case 7:
-            rank = "7"; 
-            break;
-            
-            case 8:
-            rank = "8"; 
-            break;
-
-            case 9:
-            rank = "9"; 
-            break;
-
-            default:
-            rank = "10"; 
+            printf("Ace"); 
         }
-
+        else
+        {
+            printf("%u", c.rs.p.rank); 
+        }
+        
         switch (c.rs.p.suit)
         {
             case SPADES:
@@ -187,7 +157,7 @@ void card_show(struct card c)
             break; 
         }
 
-        printf("%s of %s", rank, suit); 
+        printf(" of %s", suit); 
     }
 }
 
@@ -197,7 +167,6 @@ int cards_equal(struct card c1, struct card c2)
     {
         return 0; 
     }
-
     else if (c1.type == FACE)
     {
         if ((c1.rs.f.rank != c2.rs.f.rank) || (c1.rs.f.suit != c2.rs.f.suit))
@@ -205,7 +174,6 @@ int cards_equal(struct card c1, struct card c2)
             return 0; 
         }
     }
-
     else if (c1.type == PIP)
     {
         if ((c1.rs.p.rank != c2.rs.p.rank) || (c1.rs.p.suit != c2.rs.p.suit))
@@ -223,15 +191,11 @@ unsigned int sum_cards(struct card* cards, unsigned int ncards)
 
     for (int j = 0; j < ncards; j++)
     {
-        if (cards[j].type == JOKER)
-        {
-            sum += 1; 
-        }
-        else if (cards[j].type == FACE)
+        if (cards[j].type == FACE)
         {
             sum += 10; 
         }
-        else
+        else if (cards[j].type == PIP)
         {
             sum += cards[j].rs.p.rank; 
         }
