@@ -87,8 +87,8 @@ bool place_piece(game* g, pos p)
         {
             above = up_one(above); 
             while (board_get(g->b, above) != EMPTY
-                   && (!(posqueue_member(g->hanging, above))
-                   && above.r > 0))
+                   && (!(posqueue_member(g->hanging, above)))
+                   && above.r > 0)
             {
                fall(g->b, above); 
                if (above.r > 0)

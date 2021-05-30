@@ -422,7 +422,7 @@ void evidence_place_piece()
     board_show(game8->b);
     place_piece(game8, make_pos(1,0));
     board_show(game8->b);
-    place_piece(game8, make_pos(1,3));
+    place_piece(game8, make_pos(2,2));
     board_show(game8->b);
     place_piece(game8, make_pos(2,0));
     board_show(game8->b);
