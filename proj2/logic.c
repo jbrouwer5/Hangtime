@@ -53,13 +53,14 @@ void fall(board *b, pos p)
         cell curr = board_get(b, spot); 
         board_set(b, spot, EMPTY); 
         spot = down_one(spot); 
-        board_set(b, spot, curr); 
+        board_set(b, spot, curr);
+        board_get(b, spot); 
     }
 }
 
 bool place_piece(game* g, pos p)
 {
-    if (board_get(g->b, p) != EMPTY)
+    if ((board_get(g->b, p) != EMPTY) || (p.r >= g->b->height) || (p.c >= g->b->width))
     {
         return false; 
     }

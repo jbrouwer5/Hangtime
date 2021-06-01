@@ -6,8 +6,18 @@
 bucket *bucket_cons(char *s, unsigned long int hash, bucket *b)
 {
     bucket *new_bucket = (bucket*)malloc(sizeof(bucket)); 
+    if (new_bucket == NULL)
+    {
+        fprintf(stderr, "bucket_cons: malloc failed\n"); 
+        exit(1);
+    }
     char *str = (char*)malloc(sizeof(char) * strlen(s)); 
-
+    if (str == NULL)
+    {
+        fprintf(stderr, "bucket_cons: malloc failed\n"); 
+        exit(1);
+    }
+    
     for (int j = 0; j < strlen(s); j++)
     {
         str[j] = s[j]; 

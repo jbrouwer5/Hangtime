@@ -30,10 +30,20 @@ unsigned long int bad_hash(char *s)
 htbl *htbl_new(unsigned long int(*h)(char*), unsigned int sz)
 {
     htbl *new_htbl = (htbl*)malloc(sizeof(htbl)); 
+    if (new_htbl == NULL)
+    {
+        fprintf(stderr, "htbl_new: malloc failed\n"); 
+        exit(1);
+    }
 
     new_htbl->hash = h; 
     new_htbl->n_buckets = sz; 
     new_htbl->buckets = (bucket**)malloc(sizeof(bucket*) * sz);
+    if (new_htbl->buckets == NULL)
+    {
+        fprintf(stderr, "htbl_new: malloc failed\n"); 
+        exit(1);
+    }
 
     for (int j = 0; j < sz; j++)
     {

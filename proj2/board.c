@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <math.h>
 #include "board.h"
 
 board* board_new(unsigned int width, unsigned int height, enum type type)
@@ -30,8 +31,18 @@ board* board_new(unsigned int width, unsigned int height, enum type type)
     }
     else
     {
-        fprintf(stderr, "board_new : Bits not implemented yet\n");
-        exit(1); 
+        unsigned int* new_bits;  
+         
+        int length = ceil(width * height / 16); 
+
+         new_bits = (unsigned int*)malloc(sizeof(unsigned int) * length); 
+         
+         for (int j = 0; j < length; j++)
+         {
+             new_bits[j] = 0; 
+         }
+
+         new_board->u.bits = new_bits;
     }
 
     return new_board; 
@@ -47,12 +58,13 @@ void board_free(board* b)
         }
 
         free(b->u.matrix); 
-        free(b); 
     }
     else
     {
-        fprintf(stderr, "board_free : Bits not supported\n"); 
+        free(b->u.bits); 
     }
+
+    free(b); 
 }
 
 void print_header(int val)
@@ -100,11 +112,11 @@ void board_show(board* b)
 
         for (int i = 0; i < b->width; i++)
         {
-            if (b->u.matrix[j][i] == EMPTY)
+            if (board_get(b, make_pos(j,i)) == EMPTY)
             {
                 printf(".");  
             }
-            else if (b->u.matrix[j][i] == BLACK)
+            else if (board_get(b, make_pos(j,i)) == BLACK)
             {
                 printf("*"); 
             }
@@ -126,9 +138,32 @@ cell board_get(board* b, pos p)
         exit(1); 
     }
 
-    cell c = b->u.matrix[p.r][p.c]; 
-
-    return c;
+    if (b->type == MATRIX)
+    {
+        cell c = b->u.matrix[p.r][p.c]; 
+        return c;
+    }
+    else
+    {
+        int tot = p.r * b->width + p.c;
+        int index = tot / 16; 
+        int magnitude = tot % 16 * 2; 
+        unsigned int compare = pow(2, magnitude) + pow(2, magnitude + 1); 
+        unsigned int result = b->u.bits[index] & compare; 
+        result = result >> magnitude; 
+        if (result == 0)
+        {
+            return EMPTY; 
+        }
+        else if (result == 1)
+        {
+            return BLACK; 
+        }
+        else
+        {
+            return WHITE; 
+        }
+    }
 }
 
 void board_set(board* b, pos p, cell c)
@@ -139,6 +174,43 @@ void board_set(board* b, pos p, cell c)
         exit(1); 
     }
 
-    b->u.matrix[p.r][p.c] = c; 
+    if (b->type == MATRIX)
+    {
+        b->u.matrix[p.r][p.c] = c; 
+    }
+    else
+    {
+        int tot = p.r * b->width + p.c;
+        int index = tot / 16; 
+        int magnitude = tot % 16 * 2; 
+        unsigned int new; 
+        if (c == EMPTY)
+        {
+            new = 3; 
+            new = new << magnitude; 
+            new = ~new; 
+            b->u.bits[index] = b->u.bits[index] & new; 
+        }
+        else if (c == BLACK)
+        {
+            new = 1; 
+            new = new << magnitude;  
+            b->u.bits[index] = b->u.bits[index] | new; 
+            new = 1; 
+            new = new << (magnitude + 1);
+            new = ~new; 
+            b->u.bits[index] = b->u.bits[index] & new; 
+        }
+        else
+        {
+            new = 1; 
+            new = new << (magnitude + 1);  
+            b->u.bits[index] = b->u.bits[index] | new; 
+            new = 1; 
+            new = new << magnitude;
+            new = ~new; 
+            b->u.bits[index] = b->u.bits[index] & new; 
+        }
+    }
 }
 

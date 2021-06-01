@@ -113,11 +113,11 @@ void evidence_board_new()
 {
     printf("\n***Testing evidence_board_new***\n");
 
-    board *board1 = board_new(4, 6, MATRIX); 
+    board *board1 = board_new(4, 6, BITS); 
     board_show(board1); 
     board_free(board1); 
 
-    board *board2 = board_new(90, 60, MATRIX); 
+    board *board2 = board_new(90, 60, BITS); 
     board_show(board2); 
     board_free(board2); 
 }
@@ -126,7 +126,7 @@ void evidence_board_get()
 {
     printf("\n***Testing board_get***\n"); 
 
-    board *board1 = board_new(4, 6, MATRIX); 
+    board *board1 = board_new(4, 6, BITS); 
     pos p1 = make_pos(1,3); 
     cell c1 = BLACK; 
     board_set(board1, p1, c1); 
@@ -150,7 +150,7 @@ void evidence_board_get()
 void evidence_new_game()
 {
     printf("\n***Testing new_game***\n"); 
-    game *game1 = new_game(3, 2, 4, 6, MATRIX);
+    game *game1 = new_game(3, 2, 4, 6, BITS);
     
     printf("Expecting 3 : %d\n", game1->run); 
     printf("Expecting 2 : %d\n", game1->hangtime); 
@@ -163,7 +163,7 @@ void evidence_place_piece()
     printf("\n***Testing place_piece***\n"); 
 
     printf("game1\n\n");
-    game *game1 = new_game(3, 2, 4, 6, MATRIX);
+    game *game1 = new_game(3, 2, 4, 6, BITS);
     
     place_piece(game1, make_pos(1,2));
     board_show(game1->b); 
@@ -177,7 +177,7 @@ void evidence_place_piece()
     game_free(game1);
 
     printf("game2\n\n");
-    game *game2 = new_game(3, 2, 5, 8, MATRIX);
+    game *game2 = new_game(3, 2, 5, 8, BITS);
     
     place_piece(game2, make_pos(4,3));
     board_show(game2->b); 
@@ -189,7 +189,7 @@ void evidence_place_piece()
     game_free(game2);
 
     printf("game3\n\n");   
-    game *game3 = new_game(3, 2, 10, 12, MATRIX);
+    game *game3 = new_game(3, 2, 10, 12, BITS);
     
     place_piece(game3, make_pos(1,2));
     board_show(game3->b); 
@@ -237,7 +237,7 @@ void evidence_place_piece()
     game_free(game3);
 
     printf("game4\n\n");   
-    game *game4 = new_game(4, 1, 5, 7, MATRIX);
+    game *game4 = new_game(4, 1, 5, 7, BITS);
     place_piece(game4, make_pos(1,1));
     board_show(game4->b);
     place_piece(game4, make_pos(0,1));
@@ -297,7 +297,7 @@ void evidence_place_piece()
     game_free(game4);
 
     printf("game5\n\n");   
-    game *game5 = new_game(3, 2, 5, 5, MATRIX);
+    game *game5 = new_game(3, 2, 5, 5, BITS);
     place_piece(game5, make_pos(2,2));
     board_show(game5->b);
     place_piece(game5, make_pos(1,2));
@@ -333,7 +333,7 @@ void evidence_place_piece()
     game_free(game5);
 
     printf("game6\n\n");   
-    game *game6 = new_game(3, 2, 5, 5, MATRIX);
+    game *game6 = new_game(3, 2, 5, 5, BITS);
     place_piece(game6, make_pos(4,2));
     board_show(game6->b);
     place_piece(game6, make_pos(4,4));
@@ -369,7 +369,7 @@ void evidence_place_piece()
     game_free(game6);
 
     printf("game7\n\n");   
-    game *game7 = new_game(4, 2, 5, 5, MATRIX);
+    game *game7 = new_game(4, 2, 5, 5, BITS);
     place_piece(game7, make_pos(4,4));
     board_show(game7->b);
     place_piece(game7, make_pos(3,4));
@@ -415,7 +415,7 @@ void evidence_place_piece()
     game_free(game7);
 
     printf("game8\n\n");   
-    game *game8 = new_game(3, 2, 5, 6, MATRIX);
+    game *game8 = new_game(3, 2, 5, 6, BITS);
     place_piece(game8, make_pos(0,0));
     board_show(game8->b);
     place_piece(game8, make_pos(1,2));
@@ -447,7 +447,7 @@ void evidence_place_piece()
     game_free(game8);
 
     printf("Game 9\n\n");   
-    game *game9 = new_game(3, 2, 5, 6, MATRIX);
+    game *game9 = new_game(3, 2, 5, 6, BITS);
     place_piece(game9, make_pos(0,0));
     board_show(game9->b);
     place_piece(game9, make_pos(1,2));
@@ -477,38 +477,6 @@ void evidence_place_piece()
     }
 
     game_free(game9);
-
-    printf("Game 10\n\n");   
-    game *game10 = new_game(3, 2, 5, 6, BITS);
-    place_piece(game10, make_pos(0,0));
-    board_show(game10->b);
-    place_piece(game10, make_pos(0,1));
-    board_show(game10->b);
-    place_piece(game10, make_pos(0,2));
-    board_show(game10->b);
-    place_piece(game10, make_pos(0,3));
-    board_show(game10->b);
-    place_piece(game10, make_pos(0,4));
-    board_show(game10->b);
-
-    if (game_outcome(game10) == WHITE_WIN)
-    {
-        printf("WHITE_WIN\n"); 
-    }
-    else if (game_outcome(game10) == BLACK_WIN)
-    {
-        printf("BLACK_WIN\n"); 
-    }
-    else if (game_outcome(game10) == DRAW)
-    {
-        printf("DRAW\n"); 
-    }
-    else
-    {
-        printf("IN_PROGRESS\n"); 
-    }
-
-    game_free(game10);
 }
 
 int main(int argc, char* argv[])

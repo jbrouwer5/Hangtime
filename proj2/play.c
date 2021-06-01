@@ -7,10 +7,12 @@
 
 game* start_game (int argc, char* argv[])
 {
-    int w;
-    int h; 
-    int r;
-    int t; 
+    int w = 0;
+    int h = 0; 
+    int r = 0;
+    int t = 0; 
+    enum type typ; 
+    int typ_found = 0; 
 
     for (int j = 1; j < argc; j++)
     {
@@ -30,9 +32,25 @@ game* start_game (int argc, char* argv[])
         {
             t = atoi(argv[j+1]); 
         }
+        else if (!strcmp(argv[j], "-b"))
+        {
+            typ = BITS; 
+            typ_found = 1; 
+        }
+        else if (!strcmp(argv[j], "-m"))
+        {
+            typ = MATRIX; 
+            typ_found = 1; 
+        }
     }
 
-    game *n_game = new_game(r, t, w, h, MATRIX); 
+    if (!((r && w && h && typ_found) && (r != 1)))
+    {
+        fprintf(stderr, "Not all inputs included\n"); 
+        exit(1); 
+    }
+
+    game *n_game = new_game(r, t, w, h, typ); 
 
     return n_game; 
 }
@@ -119,6 +137,7 @@ int main(int argc, char* argv[])
             char c; 
             scanf("%c%c%*c", &r, &c);
             
+            
             r = decode_ascii(r); 
             c = decode_ascii(c); 
 
@@ -126,9 +145,11 @@ int main(int argc, char* argv[])
 
             if (r != '.' && c != '.')
             {
-                if (board_get(curr_game->b, make_pos(r, c)) != EMPTY)
+                if (r >= curr_game->b->height || c >= curr_game->b->width || board_get(curr_game->b, 
+                    make_pos(r, c)) != EMPTY)
                 {
-                    printf("Invalid location, already full or off the board.\n");
+                    printf("Invalid location, "
+                           "already full or off the board.\n");
                 }
                 else
                 {
