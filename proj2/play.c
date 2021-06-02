@@ -5,6 +5,7 @@
 #include "pos.h"
 #include "logic.h"
 
+// takes the input from play and returns a pointer to a new game 
 game* start_game (int argc, char* argv[])
 {
     int w = 0;
@@ -55,6 +56,7 @@ game* start_game (int argc, char* argv[])
     return n_game; 
 }
 
+// takes a pointer to a game and prints whose turn it is
 void print_turn(game* g)
 {
     if (g->player == BLACKS_TURN)
@@ -67,6 +69,7 @@ void print_turn(game* g)
     }
 }
 
+// takes a char and returns the associated number value for col and row headers
 char decode_ascii(char c)
 {
     if (c < 58 && c >= 48)
@@ -92,6 +95,7 @@ char decode_ascii(char c)
 
 }
 
+// takes a pointer to a game and returns the outcome of the game 
 int give_outcome(game* g)
 {
     outcome result = game_outcome(g); 
@@ -145,8 +149,7 @@ int main(int argc, char* argv[])
 
             if (r != '.' && c != '.')
             {
-                if (r >= curr_game->b->height || c >= curr_game->b->width || board_get(curr_game->b, 
-                    make_pos(r, c)) != EMPTY)
+                if (!place_piece(curr_game, make_pos(r,c)))
                 {
                     printf("Invalid location, "
                            "already full or off the board.\n");
@@ -154,7 +157,6 @@ int main(int argc, char* argv[])
                 else
                 {
                     pos_unfilled = 0; 
-                    place_piece(curr_game, make_pos(r,c));  
                 }
             }
             else

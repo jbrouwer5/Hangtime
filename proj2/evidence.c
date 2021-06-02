@@ -5,6 +5,7 @@
 #include "board.h"
 #include "logic.h"
 
+// prints a position 
 void show_pos(posqueue* p) 
 {
     if (p->head == NULL)

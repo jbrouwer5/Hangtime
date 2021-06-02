@@ -67,6 +67,7 @@ void board_free(board* b)
     free(b); 
 }
 
+// prints the corresponding header value for row or column j 
 void print_header(int val)
 {
     if (val < 10)
@@ -89,6 +90,7 @@ void print_header(int val)
     }
 }
 
+// prints the column headers for a board 
 void show_col_heads(int width)
 {
     printf("  "); 

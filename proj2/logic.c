@@ -6,7 +6,7 @@
 game* new_game(unsigned int run, unsigned int hangtime, unsigned int width,
                unsigned int height, enum type type)
 {
-    if (run > width && run > height)
+    if ((run > width && run > height) || width < 1 || height < 1 || run < 2 )
     {
         fprintf(stderr, "new_game : a winning run isn't possible" 
                         "with the given dimensions. \n");
@@ -31,6 +31,7 @@ void game_free(game* g)
         free(g);
 } 
 
+// takes a position and returns the position up one row
 pos up_one(pos p)
 {
     p = make_pos(p.r - 1, p.c); 
@@ -43,6 +44,7 @@ pos down_one(pos p)
     return p; 
 }
 
+// takes a position and returns the position down one row 
 void fall(board *b, pos p)
 {
     pos spot = p; 
@@ -60,7 +62,8 @@ void fall(board *b, pos p)
 
 bool place_piece(game* g, pos p)
 {
-    if ((board_get(g->b, p) != EMPTY) || (p.r >= g->b->height) || (p.c >= g->b->width))
+    if ((p.r >= g->b->height) || (p.c >= g->b->width) || 
+        (board_get(g->b, p) != EMPTY))
     {
         return false; 
     }
@@ -103,6 +106,7 @@ bool place_piece(game* g, pos p)
     return true; 
 }
 
+// checks wins across the rows starting at the left column 
 outcome check_left_col_rows(game* g)
 {
     int count = 0; 
@@ -161,6 +165,7 @@ outcome check_left_col_rows(game* g)
     }
 }
 
+// Checks for wins along the diagonals starting at the left column going up 
 outcome check_left_col_up_dags(game* g)
 {
     int count = 0; 
@@ -229,6 +234,8 @@ outcome check_left_col_up_dags(game* g)
     }
 }
 
+
+// Checks for wins along the diagonals starting at the left column going down
 outcome check_left_col_down_dags(game* g)
 {
     int count = 0; 
@@ -297,6 +304,7 @@ outcome check_left_col_down_dags(game* g)
     }
 }
 
+// checks for wins along the columns starting at the first row 
 outcome check_top_row_cols(game* g)
 {
     int count = 0; 
@@ -355,6 +363,7 @@ outcome check_top_row_cols(game* g)
     }
 }
 
+// checks for wins along diagonals starting at the top row going right and down
 outcome check_top_row_right_dags(game* g)
 {
     int count = 0; 
@@ -423,6 +432,7 @@ outcome check_top_row_right_dags(game* g)
     }
 }
 
+// checks for diagonals starting at the right column and going down to the left
 outcome check_right_col_down_dags(game* g)
 {
     int count = 0;
@@ -491,6 +501,22 @@ outcome check_right_col_down_dags(game* g)
     }
 }
 
+int check_full(game *g)
+{
+    for (int j = 0; j < g->b->height; j++)
+    {
+        for (int i = 0; i < g->b->width; i++)
+        {
+            if (board_get(g->b, make_pos(j, i)) == EMPTY)
+            {
+                return 0; 
+            }
+        }
+    }
+
+    return 1; 
+}
+
 
 
 outcome game_outcome(game* g)
@@ -500,7 +526,7 @@ outcome game_outcome(game* g)
         check_left_col_up_dags(g) == DRAW ||
         check_top_row_cols(g) == DRAW ||
         check_top_row_right_dags(g) == DRAW ||
-        check_right_col_down_dags(g) == DRAW)
+        check_right_col_down_dags(g) == DRAW) 
     {
         return DRAW;   
     }
@@ -523,6 +549,11 @@ outcome game_outcome(game* g)
         check_right_col_down_dags(g) == WHITE_WIN)
     {
         return WHITE_WIN; 
+    }
+
+    if (check_full(g))
+    {
+        return DRAW;
     }
 
     return IN_PROGRESS; 
