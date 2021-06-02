@@ -8,4 +8,4 @@ evidencebits: pos.h pos.c board.h board.c logic.h logic.c evidencebits.c
 	clang -Wall -g -O0 -lm -o evidencebits pos.c board.c logic.c evidencebits.c
 	
 clean:
-	rm -rf evidence play *.o *~ *dSYM
+	rm -rf evidencebits evidence play *.o *~ *dSYM
