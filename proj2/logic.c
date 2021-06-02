@@ -106,401 +106,7 @@ bool place_piece(game* g, pos p)
     return true; 
 }
 
-// checks wins across the rows starting at the left column 
-outcome check_left_col_rows(game* g)
-{
-    int count = 0; 
-    bool black_win = false; 
-    bool white_win = false;
-
-    for (int i = 0; i < g->b->height; i++)
-    {
-        cell curr = EMPTY;
-        count = 0; 
-
-        for (int j = 0; j < g->b->width; j++)
-        {
-            cell new = board_get(g->b, make_pos(i, j));
-
-            if (new == curr && curr != EMPTY)
-            {
-                count++;
-            } 
-            else
-            {
-                count = 0;
-            }
-
-            if (count == (g->run - 1))
-            {
-                if (new == BLACK)
-                {
-                    black_win = true; 
-                }
-                else
-                {
-                    white_win = true;  
-                }
-            }
-
-            curr = new; 
-        }
-    }
-    
-    if (white_win && black_win)
-    {
-        return DRAW; 
-    }
-    else if (white_win)
-    {
-        return WHITE_WIN;  
-    }
-    else if (black_win)
-    {
-        return BLACK_WIN;
-    }
-    else
-    {
-        return IN_PROGRESS; 
-    }
-}
-
-// Checks for wins along the diagonals starting at the left column going up 
-outcome check_left_col_up_dags(game* g)
-{
-    int count = 0; 
-    int limit = 0; 
-    bool black_win = false; 
-    bool white_win = false;
-
-    for (int i = 0; i < g->b->height; i++)
-    {
-        cell curr = EMPTY;
-        count = 0; 
-
-        if (i < g->b->width)
-        {
-            limit = i + 1; 
-        }
-        else
-        {
-            limit = g->b->width; 
-        }
-
-        for (int j = 0; j < limit; j++)
-        {
-            cell new = board_get(g->b, make_pos(i - j, j));
-
-            if (new == curr && curr != EMPTY)
-            {
-                count++;
-            } 
-            else
-            {
-                count = 0;
-            }
-
-            if (count == (g->run - 1))
-            {
-                if (new == BLACK)
-                {
-                    black_win = true; 
-                }
-                else
-                {
-                    white_win = true; 
-                }
-            }
-
-            curr = new; 
-        }
-    }
-    
-    if (white_win && black_win)
-    {
-        return DRAW; 
-    }
-    else if (white_win)
-    {
-        return WHITE_WIN;  
-    }
-    else if (black_win)
-    {
-        return BLACK_WIN;
-    }
-    else
-    {
-        return IN_PROGRESS; 
-    }
-}
-
-
-// Checks for wins along the diagonals starting at the left column going down
-outcome check_left_col_down_dags(game* g)
-{
-    int count = 0; 
-    int limit = 0; 
-    bool black_win = false; 
-    bool white_win = false;
-
-    for (int i = 0; i < g->b->height; i++)
-    {
-        cell curr = EMPTY;
-        count = 0; 
-
-        if ((g->b->height - 1 - i) < (g->b->width - 1))
-        {
-            limit = (g->b->height - i - 1); 
-        }
-        else
-        {
-            limit = g->b->width - 1; 
-        }
-
-        for (int j = 0; j <= limit; j++)
-        {
-            cell new = board_get(g->b, make_pos(i + j , j));
-
-            if (new == curr && curr != EMPTY)
-            {
-                count++;
-            } 
-            else
-            {
-                count = 0;
-            }
-
-            if (count == (g->run - 1))
-            {
-                if (new == BLACK)
-                {
-                    black_win = true; 
-                }
-                else
-                {
-                    white_win = true; 
-                }
-            }
-
-            curr = new; 
-        }
-    }
-    
-    if (white_win && black_win)
-    {
-        return DRAW; 
-    }
-    else if (white_win)
-    {
-        return WHITE_WIN;  
-    }
-    else if (black_win)
-    {
-        return BLACK_WIN;
-    }
-    else
-    {
-        return IN_PROGRESS; 
-    }
-}
-
-// checks for wins along the columns starting at the first row 
-outcome check_top_row_cols(game* g)
-{
-    int count = 0; 
-    bool black_win = false; 
-    bool white_win = false;
-
-    for (int i = 0; i < g->b->width; i++)
-    {
-        cell curr = EMPTY;
-        count = 0; 
-
-        for (int j = 0; j < g->b->height; j++)
-        {
-            cell new = board_get(g->b, make_pos(j, i));
-
-            if (new == curr && curr != EMPTY)
-            {
-                count++;
-            } 
-            else
-            {
-                count = 0;
-            }
-
-            if (count == (g->run - 1))
-            {
-                if (new == BLACK)
-                {
-                    black_win = true; 
-                }
-                else
-                {
-                    white_win = true; 
-                }
-            }
-
-            curr = new; 
-        }
-    }
-    
-    if (white_win && black_win)
-    {
-        return DRAW; 
-    }
-    else if (white_win)
-    {
-        return WHITE_WIN;  
-    }
-    else if (black_win)
-    {
-        return BLACK_WIN;
-    }
-    else
-    {
-        return IN_PROGRESS; 
-    }
-}
-
-// checks for wins along diagonals starting at the top row going right and down
-outcome check_top_row_right_dags(game* g)
-{
-    int count = 0; 
-    int limit = 0; 
-    bool black_win = false; 
-    bool white_win = false;
-
-    for (int i = 1; i < g->b->width; i++)
-    {
-        cell curr = EMPTY;
-        count = 0; 
-
-        if ((g->b->width - i - 1) < (g->b->height - 1))
-        {
-            limit = g->b->width - i - 1;
-        }
-        else
-        {
-            limit = g->b->height - 1; 
-        }
-
-        for (int j = 0; j <= limit; j++)
-        {
-            cell new = board_get(g->b, make_pos(j, i + j));
-
-            if (new == curr && curr != EMPTY)
-            {
-                count++;
-            } 
-            else
-            {
-                count = 0;
-            }
-
-            if (count == (g->run - 1))
-            {
-                if (new == BLACK)
-                {
-                    black_win = true; 
-                }
-                else
-                {
-                    white_win = true; 
-                }
-            }
-
-            curr = new; 
-        }
-    }
-    
-    if (white_win && black_win)
-    {
-        return DRAW; 
-    }
-    else if (white_win)
-    {
-        return WHITE_WIN;  
-    }
-    else if (black_win)
-    {
-        return BLACK_WIN;
-    }
-    else
-    {
-        return IN_PROGRESS; 
-    }
-}
-
-// checks for diagonals starting at the right column and going down to the left
-outcome check_right_col_down_dags(game* g)
-{
-    int count = 0;
-    int limit = 0; 
-    bool black_win = false; 
-    bool white_win = false;
-
-    for (int i = 1; i < g->b->height; i++)
-    {
-        cell curr = EMPTY;
-        count = 0; 
-
-        if (g->b->height - 1- i < g->b->width)
-        {
-            limit = g->b->height - 1 - i; 
-        }
-        else
-        {
-            limit = g->b->width - 1; 
-        }
-
-        for (int j = 0; j <= limit; j++)
-        {
-            cell new = board_get(g->b, make_pos(i + j, g->b->width - 1 - j));
-
-            if (new == curr && curr != EMPTY)
-            {
-                count++;
-            } 
-            else
-            {
-                count = 0;
-            }
-
-            if (count == (g->run - 1))
-            {
-                if (new == BLACK)
-                {
-                    black_win = true; 
-                }
-                else
-                {
-                    white_win = true;  
-                }
-            }
-
-            curr = new; 
-        }
-    }
-    
-    if (white_win && black_win)
-    {
-        return DRAW; 
-    }
-    else if (white_win)
-    {
-        return WHITE_WIN;  
-    }
-    else if (black_win)
-    {
-        return BLACK_WIN;
-    }
-    else
-    {
-        return IN_PROGRESS; 
-    }
-}
-
+// checks if the board is full
 int check_full(game *g)
 {
     for (int j = 0; j < g->b->height; j++)
@@ -517,46 +123,156 @@ int check_full(game *g)
     return 1; 
 }
 
+// checks if there is a winning run in the given line 
+outcome check_direction(game* g, int start_row, int start_col, 
+                        int y_direction, int x_direction)
+{
+    int count = 0; 
+    bool black_win = false; 
+    bool white_win = false;
+    int row = start_row;
+    int col = start_col; 
+    cell curr = EMPTY;
 
+    while (row < g->b->height && row >= 0 && col < g->b->width && col >= 0)
+    {
+        cell new = board_get(g->b, make_pos(row, col));
+
+        if (new == curr && curr != EMPTY)
+        {
+            count++;
+        } 
+        else
+        {
+            count = 0;
+        }
+
+        if (count == (g->run - 1))
+        {
+            if (new == BLACK)
+            {
+                black_win = true; 
+            }
+            else
+            {
+                white_win = true;  
+            }
+        }
+
+        row += y_direction; 
+        col += x_direction; 
+        curr = new; 
+    }
+    
+    if (white_win && black_win)
+    {
+        return DRAW; 
+    }
+    else if (white_win)
+    {
+        return WHITE_WIN;  
+    }
+    else if (black_win)
+    {
+        return BLACK_WIN;
+    }
+    else
+    {
+        return IN_PROGRESS; 
+    }
+}
 
 outcome game_outcome(game* g)
 {
-    if (check_left_col_rows(g) == DRAW||
-        check_left_col_down_dags(g) == DRAW ||
-        check_left_col_up_dags(g) == DRAW ||
-        check_top_row_cols(g) == DRAW ||
-        check_top_row_right_dags(g) == DRAW ||
-        check_right_col_down_dags(g) == DRAW) 
+    bool white_win;
+    bool black_win; 
+    outcome rows; 
+    outcome cols; 
+    outcome left_down_dags; 
+    outcome right_down_dags; 
+    outcome left_up_dags; 
+    outcome right_up_dags;  
+
+    for (int i = 0; i < g->b->height; i++)
     {
-        return DRAW;   
+        rows = check_direction(g, i, 0, 0, 1); 
+        left_down_dags = check_direction(g, i, 0, 1, 1); 
+        left_up_dags = check_direction(g, i, 0, -1, 1); 
+        right_up_dags = check_direction(g, i, g->b->width - 1, 1, -1); 
+
+        if (rows == DRAW ||
+            left_down_dags == DRAW ||
+            left_up_dags == DRAW ||
+            right_up_dags == DRAW)
+        {
+            return DRAW;  
+        }  
+
+        if (black_win == false &&
+            (rows == BLACK_WIN ||
+            left_down_dags == BLACK_WIN ||
+            left_up_dags == BLACK_WIN ||
+            right_up_dags == BLACK_WIN)) 
+        {
+            black_win = true;  
+        }  
+
+        if (white_win == false &&
+            (rows == WHITE_WIN ||
+            left_down_dags == WHITE_WIN ||
+            left_up_dags == WHITE_WIN ||
+            right_up_dags == WHITE_WIN))
+        {
+            white_win = true;    
+        }
     }
 
-    if (check_left_col_rows(g) == BLACK_WIN ||
-        check_left_col_down_dags(g) == BLACK_WIN ||
-        check_left_col_up_dags(g) == BLACK_WIN ||
-        check_top_row_cols(g) == BLACK_WIN ||
-        check_top_row_right_dags(g) == BLACK_WIN ||
-        check_right_col_down_dags(g) == BLACK_WIN)
+    for (int j = 0; j < g->b->width; j++)
     {
-        return BLACK_WIN;  
+        cols = check_direction(g, 0, j, 1, 0);
+        right_down_dags = check_direction(g, 0, j, 1, 1);
+
+        if (cols == DRAW ||
+            right_down_dags == DRAW) 
+        {
+            return DRAW;  
+        }  
+
+        if (black_win == false &&
+            (cols == BLACK_WIN ||
+            right_down_dags == BLACK_WIN)) 
+        {
+            black_win = true;  
+        }  
+
+        if (white_win == false &&
+            (cols == WHITE_WIN ||
+            right_down_dags == WHITE_WIN))
+        {
+            white_win = true;    
+        }
     }
 
-    if (check_left_col_rows(g) == WHITE_WIN ||
-        check_left_col_down_dags(g) == WHITE_WIN ||
-        check_left_col_up_dags(g) == WHITE_WIN ||
-        check_top_row_cols(g) == WHITE_WIN ||
-        check_top_row_right_dags(g) == WHITE_WIN ||
-        check_right_col_down_dags(g) == WHITE_WIN)
-    {
-        return WHITE_WIN; 
-    }
-
-    if (check_full(g))
+    if (white_win && black_win)
     {
         return DRAW;
     }
-
-    return IN_PROGRESS; 
+    else if (white_win)
+    {
+        return WHITE_WIN; 
+    }
+    else if (black_win)
+    {
+        return BLACK_WIN; 
+    }
+    else if (check_full(g))
+    {
+        return DRAW;
+    }
+    else
+    {
+        return IN_PROGRESS; 
+    }
 }
 
 
