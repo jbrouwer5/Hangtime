@@ -1,4 +1,0 @@
-Lab 1 Test file
-===============
-
-Author: Firstname Lastname
